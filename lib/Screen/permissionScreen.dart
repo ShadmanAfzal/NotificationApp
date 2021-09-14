@@ -1,11 +1,9 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:permission/Components/permissionTiles.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionScreen extends StatefulWidget {
-  const PermissionScreen({Key? key}) : super(key: key);
+  const PermissionScreen({Key key}) : super(key: key);
 
   @override
   _PermissionScreenState createState() => _PermissionScreenState();
@@ -37,6 +35,14 @@ class _PermissionScreenState extends State<PermissionScreen> {
       Permission.storage,
       Permission.microphone
     ].request();
+
+    fileSystem = statuses[Permission.storage]?.isGranted ?? false;
+    camera = statuses[Permission.camera]?.isGranted ?? false;
+    sms = statuses[Permission.sms]?.isGranted ?? false;
+    bluetooth = statuses[Permission.bluetooth]?.isGranted ?? false;
+    notification = statuses[Permission.notification]?.isGranted ?? false;
+    voiceInput = statuses[Permission.microphone]?.isGranted ?? false;
+    location = statuses[Permission.location]?.isGranted ?? false;
   }
 
   @override
@@ -49,19 +55,13 @@ class _PermissionScreenState extends State<PermissionScreen> {
       body: Column(
         children: [
           Text("Permission Allowed"),
-          permissionTiles(
-              statuses[Permission.storage]?.isDenied ?? false, "File System"),
-          permissionTiles(
-              statuses[Permission.camera]?.isDenied ?? false, "Camera"),
-          permissionTiles(
-              statuses[Permission.location]?.isDenied ?? false, "Location"),
-          permissionTiles(
-              statuses[Permission.bluetooth]?.isDenied ?? false, "Bluetooth"),
-          permissionTiles(statuses[Permission.sms]?.isDenied ?? false, "SMS"),
-          permissionTiles(statuses[Permission.microphone]?.isDenied ?? false,
-              "Voice Input"),
-          permissionTiles(statuses[Permission.notification]?.isDenied ?? false,
-              "Notification"),
+          permissionTiles(fileSystem, "File System"),
+          permissionTiles(camera, "Camera"),
+          permissionTiles(location, "Location"),
+          permissionTiles(bluetooth, "Bluetooth"),
+          permissionTiles(sms, "SMS"),
+          permissionTiles(voiceInput, "Voice Input"),
+          permissionTiles(notification, "Notification"),
         ],
       ),
     );
